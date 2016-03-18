@@ -1,0 +1,13 @@
+type: module
+name: Migrate Non Drupal
+description: 'Migrate the Non Drupal site to Drupal 8.'
+package: Migration
+# core: 8.x
+dependencies:
+  - migrate
+  - migrate_nd_setup
+
+# Information added by Drupal.org packaging script on 2015-11-17
+version: '8.x-1.0-beta1'
+core: '8.x'
+datestamp: 1447789029
