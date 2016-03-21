@@ -35,7 +35,7 @@ class MediasNode extends SqlBase {
      * below.
      */
     $query = $this->select('migrate_nd_mds_node', 'b')
-                 ->fields('b', ['sbid', 'title','dt_session','descrip','aid']);
+                 ->fields('b', ['sbid', 'title','dt_session','descrip','aid','mbid','mediaentity']);
     return $query;
   }
 
@@ -48,8 +48,9 @@ class MediasNode extends SqlBase {
       'title' => $this->t('Title of ssd'),
       'dt_session' => $this->t('Ssd date'),
       'descrip' => $this->t('Title of description'),
-      'aid' => $this->t('Auther')
-
+      'aid' => $this->t('Auther'),
+      'mbid' => $this->t('Teacher id'),
+      'mediaentity' => $this->t('mediaentity id'),
     ];
 
     return $fields;

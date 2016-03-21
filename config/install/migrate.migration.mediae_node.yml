@@ -13,6 +13,7 @@ process:
     default_value: event
   title: title
   nid: ebid
+  field_sessions: sbid
   field_dateonly: dt_event
   'body/value': eventbody
   'body/summary': eventbody

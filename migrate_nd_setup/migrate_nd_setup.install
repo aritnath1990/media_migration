@@ -86,6 +86,16 @@ function migrate_nd_mds_schema_node() {
         'not null' => FALSE,
         'description' => 'Account Id of the author.',
       ),
+    'mbid' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'description' => 'Teacer Id of the id.',
+      ),
+    'mediaentity' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'description' => 'Media Id of the id.',
+      ),
     ),
     'primary key' => array('sbid'),
   );
@@ -121,6 +131,11 @@ function migrate_nd_mde_schema_node() {
         'type' => 'int',
         'not null' => FALSE,
         'description' => 'Account Id of the author.',
+      ),
+     'sbid' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'description' => 'Session Id of the author.',
       ),
     ),
     'primary key' => array('ebid'),
@@ -302,9 +317,10 @@ function migrate_nd_md_data_node() {
            ->fields($fields);
   // Use high mbid numbers to avoid overwriting an existing node id.
   $data = array(
-    array('89999997', 'Heineken',1), // comes with migrate_example project.
-    array('89999998', 'Miller Lite',2),
-    array('89999999', 'Partha',1),
+    array('89999997', 'Gabriele Reifenberg',1), // comes with migrate_example project.
+    array('89999998', 'Heinz Roger',2),
+    array('89999999', 'Five Cram',1),
+    array('89999996', 'Iegor Reznikoff',1),
   );
   foreach ($data as $row) {
     $query->values(array_combine($fields, $row));
@@ -313,14 +329,14 @@ function migrate_nd_md_data_node() {
 }
 
 function migrate_nd_mds_data_node() {
-  $fields = array('sbid', 'title','dt_session','descrip','aid');
+  $fields = array('sbid', 'title','dt_session','descrip','aid','mbid','mediaentity');
   $query = db_insert('migrate_nd_mds_node')
            ->fields($fields);
   // Use high mbid numbers to avoid overwriting an existing node id.
   $data = array(
-    array('99999997', 'Title1','2001-11-10T00:00:00','Description0','1'), // comes with migrate_example project.
-    array('99999998', 'Title2','2010-03-30T10:31:05','Description1','2'),
-    array('99999999', 'Title3','2010-03-30T10:31:05','Description2','1'),
+    array('99999997', 'Title1','2001-11-10T00:00:00','Description0','1','89999997','1'), // comes with migrate_example project.
+    array('99999998', 'Title2','2010-03-30T10:31:05','Description1','2','89999998','1'),
+    array('99999999', 'Title3','2010-03-30T10:31:05','Description2','1','89999996','1'),
   );
   foreach ($data as $row) {
     $query->values(array_combine($fields, $row));
@@ -329,14 +345,14 @@ function migrate_nd_mds_data_node() {
 }
 
 function migrate_nd_mde_data_node() {
-  $fields = array('ebid', 'title','dt_event','eventbody','aid');
+  $fields = array('ebid', 'title','dt_event','eventbody','aid','sbid');
   $query = db_insert('migrate_nd_mde_node')
            ->fields($fields);
   // Use high mbid numbers to avoid overwriting an existing node id.
   $data = array(
-    array('79999997', 'Event1','2001-11-10','EventBody0','1'), // comes with migrate_example project.
-    array('79999998', 'Event2','2010-03-30','EventBody1','2'),
-    array('79999999', 'Event3','2010-03-30','EventBody2','1'),
+    array('79999997', 'Event1','2001-11-10','EventBody0','1','99999997'), // comes with migrate_example project.
+    array('79999998', 'Event2','2010-03-30','EventBody1','2','99999998'),
+    array('79999999', 'Event3','2010-03-30','EventBody2','1','99999999'),
   );
   foreach ($data as $row) {
     $query->values(array_combine($fields, $row));

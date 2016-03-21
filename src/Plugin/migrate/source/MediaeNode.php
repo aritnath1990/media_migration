@@ -35,7 +35,7 @@ class MediaeNode extends SqlBase {
      * below.
      */
     $query = $this->select('migrate_nd_mde_node', 'b')
-                 ->fields('b', ['ebid', 'title','dt_event','eventbody','aid']);
+                 ->fields('b', ['ebid', 'title','dt_event','eventbody','aid','sbid']);
     return $query;
   }
 
@@ -48,8 +48,8 @@ class MediaeNode extends SqlBase {
       'title' => $this->t('Title of Event'),
       'dt_event' => $this->t('Event date'),
       'eventbody' => $this->t('Body of Event'),
-      'aid' => $this->t('Auther')
-
+      'aid' => $this->t('Auther'),
+      'sbid' => $this->t('session id')
     ];
 
     return $fields;
