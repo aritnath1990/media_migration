@@ -1,0 +1,21 @@
+# Migration configuration for dyn content.
+id: mediam_media
+label: Migrate Recipes photos from api into Drupal 8 file entities
+migration_group: dyn
+source:
+  plugin: mediam_media
+destination:
+  plugin: entity:audio
+  urlencode: true
+  source_path_property: uri
+requirements:
+    _permission: 'administer site configuration'
+process:
+  type:
+    plugin: default_value
+    default_value: audio
+  uid:
+    plugin: default_value
+    default_value: 1
+  uri: uril
+  filename: filename

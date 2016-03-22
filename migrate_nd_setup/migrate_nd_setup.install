@@ -15,6 +15,8 @@ function migrate_nd_setup_schema() {
   $schema['migrate_nd_md_node'] = migrate_nd_md_schema_node();
   $schema['migrate_nd_mds_node'] = migrate_nd_mds_schema_node();
   $schema['migrate_nd_mde_node'] = migrate_nd_mde_schema_node();
+  $schema['migrate_nd_mdm_node'] = migrate_nd_mdm_schema_node();
+
 
 
   return $schema;
@@ -29,6 +31,7 @@ function migrate_nd_setup_install() {
   migrate_nd_md_data_node();
   migrate_nd_mds_data_node();
   migrate_nd_mde_data_node();
+  migrate_nd_mdm_data_node();
 
 
 }
@@ -141,6 +144,44 @@ function migrate_nd_mde_schema_node() {
     'primary key' => array('ebid'),
   );
 }
+
+
+function migrate_nd_mdm_schema_node() {
+  return array(
+    'description' => 'Beers of the world.',
+    'fields' => array(
+      'mebid'  => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'Media ID.',
+      ),
+      'title'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      
+     'aid' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'description' => 'Account Id of the author.',
+      ),
+    'uril'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    'filename'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('mebid'),
+  );
+}
+
+
 
 function migrate_nd_dyn_schema_node() {
    return array(
@@ -353,6 +394,25 @@ function migrate_nd_mde_data_node() {
     array('79999997', 'Event1','2001-11-10','EventBody0','1','99999997'), // comes with migrate_example project.
     array('79999998', 'Event2','2010-03-30','EventBody1','2','99999998'),
     array('79999999', 'Event3','2010-03-30','EventBody2','1','99999999'),
+  );
+  foreach ($data as $row) {
+    $query->values(array_combine($fields, $row));
+  }
+  $query->execute();
+}
+
+function migrate_nd_mdm_data_node() {
+  $fields = array('mebid', 'title','aid','uril','filename');
+  $query = db_insert('migrate_nd_mdm_node')
+           ->fields($fields);
+  // Use high mbid numbers to avoid overwriting an existing node id.
+  $data = array(
+    array('69999997', 'Media1','1','public://www.drupal.org/node/2637890
+','2637890.txt'), // comes with migrate_example project.
+    array('69999998', 'Media2','2','public://www.drupal.org/node/2637890
+','2637890.txt'),
+    array('69999999', 'Media3','1','public://www.drupal.org/node/2637890
+','2637890.txt'),
   );
   foreach ($data as $row) {
     $query->values(array_combine($fields, $row));
