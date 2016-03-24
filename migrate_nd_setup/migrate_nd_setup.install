@@ -16,7 +16,7 @@ function migrate_nd_setup_schema() {
   $schema['migrate_nd_mds_node'] = migrate_nd_mds_schema_node();
   $schema['migrate_nd_mde_node'] = migrate_nd_mde_schema_node();
   $schema['migrate_nd_mdm_node'] = migrate_nd_mdm_schema_node();
-
+  $schema['migrate_nd_mdmyt_node'] = migrate_nd_mdmyt_schema_node();
 
 
   return $schema;
@@ -32,7 +32,7 @@ function migrate_nd_setup_install() {
   migrate_nd_mds_data_node();
   migrate_nd_mde_data_node();
   migrate_nd_mdm_data_node();
-
+  migrate_nd_mdmyt_data_node();
 
 }
 function migrate_nd_md_schema_node() {
@@ -181,7 +181,40 @@ function migrate_nd_mdm_schema_node() {
   );
 }
 
-
+function migrate_nd_mdmyt_schema_node() {
+  return array(
+    'description' => 'Beers of the world.',
+    'fields' => array(
+      'meytbid'  => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'Media ID.',
+      ),
+      'title'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      
+     'aid' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'description' => 'Account Id of the author.',
+      ),
+    'uril'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    'filename'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('meytbid'),
+  );
+}
 
 function migrate_nd_dyn_schema_node() {
    return array(
@@ -407,11 +440,22 @@ function migrate_nd_mdm_data_node() {
            ->fields($fields);
   // Use high mbid numbers to avoid overwriting an existing node id.
   $data = array(
-    array('69999997', 'Media1','1','public://www.drupal.org/node/2637890
-','2637890.txt'), // comes with migrate_example project.
-    array('69999998', 'Media2','2','public://www.drupal.org/node/2637890
+       array('69999999', 'Media3','1','public://www.drupal.org/node/2637890
 ','2637890.txt'),
-    array('69999999', 'Media3','1','public://www.drupal.org/node/2637890
+  );
+  foreach ($data as $row) {
+    $query->values(array_combine($fields, $row));
+  }
+  $query->execute();
+}
+
+function migrate_nd_mdmyt_data_node() {
+  $fields = array('meytbid', 'title','aid','uril','filename');
+  $query = db_insert('migrate_nd_mdmyt_node')
+           ->fields($fields);
+  // Use high mbid numbers to avoid overwriting an existing node id.
+  $data = array(
+       array('59999999', 'YouTube1','1','public://www.drupal.org/node/2637890
 ','2637890.txt'),
   );
   foreach ($data as $row) {
