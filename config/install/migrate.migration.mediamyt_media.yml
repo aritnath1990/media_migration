@@ -18,8 +18,11 @@ process:
   mid: meytbid
   status:
     plugin: default_value
-    default_value: 1
-  promote:
-    plugin: default_value
     default_value: 0
-field_youtube_uri : uril
+  field_youtube: meytbid
+  field_youtube:
+    id: field_youtube
+    table: field_youtube
+    field_youtube_title: 
+      plugin: default_value
+      default_value: youtube

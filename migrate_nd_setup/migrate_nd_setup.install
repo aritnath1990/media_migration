@@ -408,9 +408,9 @@ function migrate_nd_mds_data_node() {
            ->fields($fields);
   // Use high mbid numbers to avoid overwriting an existing node id.
   $data = array(
-    array('99999997', 'Title1','2001-11-10T00:00:00','Description0','1','89999997','1'), // comes with migrate_example project.
-    array('99999998', 'Title2','2010-03-30T10:31:05','Description1','2','89999998','1'),
-    array('99999999', 'Title3','2010-03-30T10:31:05','Description2','1','89999996','1'),
+    array('99999997', 'Title1','2001-11-10T00:00:00','Description0','1','89999997','59999999'), // comes with migrate_example project.
+    array('99999998', 'Title2','2010-03-30T10:31:05','Description1','2','89999998','69999999'),
+    array('99999999', 'Title3','2010-03-30T10:31:05','Description2','1','89999996','59999999'),
   );
   foreach ($data as $row) {
     $query->values(array_combine($fields, $row));
@@ -440,7 +440,7 @@ function migrate_nd_mdm_data_node() {
            ->fields($fields);
   // Use high mbid numbers to avoid overwriting an existing node id.
   $data = array(
-       array('69999999', 'Media3','1','public://www.drupal.org/node/2637890
+       array('69999999', 'Media3','1','http://www.drupal.org/node/2637890
 ','2637890.txt'),
   );
   foreach ($data as $row) {
@@ -455,7 +455,7 @@ function migrate_nd_mdmyt_data_node() {
            ->fields($fields);
   // Use high mbid numbers to avoid overwriting an existing node id.
   $data = array(
-       array('59999999', 'YouTube1','1','public://www.drupal.org/node/2637890
+       array('59999999', 'YouTube1','1','http://www.drupal.org/node/2637890
 ','2637890.txt'),
   );
   foreach ($data as $row) {
@@ -733,16 +733,6 @@ WHERE lrc.class_id = rc.id
 AND rm.id = lrc.res_id
 AND rm.category_id =20');
 
-       /** $query = db_select('lnk_res_class', 'lrc');
-$query->join('res_classifications', 'rc', 'rc.id = lrc.class_id');
-$query->join('res_manager', 'rm', 'rm.id = lrc.res_id');
-$obj = $query
-  ->fields('lrc', array('res_id'))
-  ->fields('rc', array('class_name'))
-  ->fields('rm', array('category_id'))
-  ->condition('category_id','20')
-  ->execute();*/
-  
   $i=0;
   foreach ( $obj as $obj1 ) {
     $data[$i][0]=$obj1->res_id;
