@@ -71,18 +71,13 @@ class MediamytMedia extends SqlBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    /**
-     * As explained above, we need to pull the style relationships into our
-     * source row here, as an array of 'style' values (the unique ID for
-     * the media_term migration).
-     */
-    /**$terms = $this->select('media_mg_media_topic_node', 'bt')
-                 ->fields('bt', ['style'])
-      ->condition('bbid', $row->getSourceProperty('bbid'))
-      ->execute()
-      ->fetchCol();
-    $row->setSourceProperty('terms', $terms);*/
-
+     $filepath = $row->getSourceProperty('uril');
+    // We update the file path from the row within the local path in our computer.
+    $row->setSourceProperty('uril', $filepath);
+    // Retrieve the filename as our process plugin require it.
+    $file_name = $row->getSourceProperty('filename');
+    // Set the row property "name".
+    $row->setSourceProperty('filename', $file_name);
     return parent::prepareRow($row);
   }
 

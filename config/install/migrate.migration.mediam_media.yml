@@ -7,9 +7,6 @@ source:
 destination:
   plugin: entity:media
 process:
-  type:
-    plugin: default_value
-    default_value: audio
   bundle:
     plugin: default_value
     default_value: audio
@@ -23,3 +20,6 @@ process:
     plugin: default_value
     default_value: 0
   field_dropbox : mebid
+migration_dependencies:
+  required:
+    - dyn_user

@@ -7,9 +7,6 @@ source:
 destination:
   plugin: entity:media
 process:
-  type:
-    plugin: default_value
-    default_value: youtube
   bundle:
     plugin: default_value
     default_value: youtube
@@ -19,10 +16,4 @@ process:
   status:
     plugin: default_value
     default_value: 0
-  field_youtube: meytbid
-  field_youtube:
-    id: field_youtube
-    table: field_youtube
-    field_youtube_title: 
-      plugin: default_value
-      default_value: youtube
+  field_youtube: uril
