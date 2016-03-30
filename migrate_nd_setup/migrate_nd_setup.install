@@ -17,7 +17,7 @@ function migrate_nd_setup_schema() {
   $schema['migrate_nd_mde_node'] = migrate_nd_mde_schema_node();
   $schema['migrate_nd_mdm_node'] = migrate_nd_mdm_schema_node();
   $schema['migrate_nd_mdmyt_node'] = migrate_nd_mdmyt_schema_node();
-
+  $schema['migrate_nd_mdf_node'] = migrate_nd_mdf_schema_node();
 
   return $schema;
 }
@@ -33,7 +33,7 @@ function migrate_nd_setup_install() {
   migrate_nd_mde_data_node();
   migrate_nd_mdm_data_node();
   migrate_nd_mdmyt_data_node();
-
+  migrate_nd_mdf_data_node();
 }
 function migrate_nd_md_schema_node() {
   return array(
@@ -213,6 +213,53 @@ function migrate_nd_mdmyt_schema_node() {
       ),
     ),
     'primary key' => array('meytbid'),
+  );
+}
+
+function migrate_nd_mdf_schema_node() {
+  return array(
+    'description' => 'Beers of the world.',
+    'fields' => array(
+      'fid'  => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'Media ID.',
+      ),
+      'uid'  => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      
+     'filename' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    'filepath'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    'filemime'  => array(
+       'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'status'  => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'timestamp'  => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'uri'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('fid'),
   );
 }
 
@@ -440,13 +487,14 @@ function migrate_nd_mdm_data_node() {
            ->fields($fields);
   // Use high mbid numbers to avoid overwriting an existing node id.
   $data = array(
-       array('69999999', 'Media3','1','http://www.drupal.org/node/2637890
+       array('69999999', 'Media3','1','public://2016-03/2637890.txt
 ','2637890.txt'),
   );
   foreach ($data as $row) {
     $query->values(array_combine($fields, $row));
   }
   $query->execute();
+  
 }
 
 function migrate_nd_mdmyt_data_node() {
@@ -463,6 +511,37 @@ function migrate_nd_mdmyt_data_node() {
   }
   $query->execute();
 }
+
+function migrate_nd_mdf_data_node() {
+  $fields = array('fid', 'uid','filename','filepath','filemime','status','timestamp','uri');
+  $query = db_insert('migrate_nd_mdf_node')
+           ->fields($fields);
+  // Use high mbid numbers to avoid overwriting an existing node id.
+  $data = array(
+       array('123', '1','LICENSE.txt','/var/www/html/Partha/xyz/','text/plain','1','1458563370','public://ARITMIGRATE/LICENSE.txt'),
+  );
+  foreach ($data as $row) {
+    $query->values(array_combine($fields, $row));
+  }
+  $query->execute();
+  
+  
+  
+  
+  
+  $fields = array('fid', 'uid','filename','uuid','filemime','status','created','uri','langcode','changed','filesize');
+  $query = db_insert('file_managed')
+           ->fields($fields);
+  // Use high mbid numbers to avoid overwriting an existing node id.
+  $data = array(
+       array('69999999', '1','2637890.txt','qw12','text/plain','1','1458563370','public://ARITMIGRATE/2637890.txt','en','1458563370','11'),
+  );
+  foreach ($data as $row) {
+    $query->values(array_combine($fields, $row));
+  }
+  $query->execute();
+}
+
 
 
 function migrate_nd_dyn_data_node() {
