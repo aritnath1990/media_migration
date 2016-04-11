@@ -34,8 +34,8 @@ class MediasNode extends SqlBase {
      * the base node data here, and pull in the relationships in prepareRow()
      * below.
      */
-    $query = $this->select('migrate_nd_mds_node', 'b')
-                 ->fields('b', ['sbid', 'title','dt_session','descrip','aid','mbid','mediaentity']);
+    $query = $this->select('migrate_nd_mdstemp_node', 'b')
+                 ->fields('b', ['sbid', 'title','dt_session','descrip','aid','mbid','meytbid']);
     return $query;
   }
 
@@ -50,7 +50,7 @@ class MediasNode extends SqlBase {
       'descrip' => $this->t('Title of description'),
       'aid' => $this->t('Auther'),
       'mbid' => $this->t('Teacher id'),
-      'mediaentity' => $this->t('mediaentity id'),
+      'meytbid' => $this->t('mediaentity id'),
     ];
 
     return $fields;
@@ -77,12 +77,13 @@ class MediasNode extends SqlBase {
      * source row here, as an array of 'style' values (the unique ID for
      * the media_term migration).
      */
-    /**$terms = $this->select('media_mg_media_topic_node', 'bt')
-                 ->fields('bt', ['style'])
-      ->condition('bbid', $row->getSourceProperty('bbid'))
+    
+    /**$sbidref = $this->select('migrate_nd_mdmyt_node', 'bt')
+                 ->fields('bt', ['meytbid'])
+      ->condition('meytbid', $row->getSourceProperty('meytbid'))
       ->execute()
       ->fetchCol();
-    $row->setSourceProperty('terms', $terms);*/
+    $row->setSourceProperty('meytbid', $sbidref);*/
 
     return parent::prepareRow($row);
   }

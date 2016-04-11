@@ -35,7 +35,7 @@ class MediamFile extends SqlBase {
      * below.
      */
     $query = $this->select('migrate_nd_mdf_node', 'b')
-                 ->fields('b', ['fid', 'uid','filename','filepath','status','timestamp','uri']);
+                 ->fields('b', ['fid', 'uid','filename','filepath','filemime','status','timestamp','uri']);
     return $query;
   }
 

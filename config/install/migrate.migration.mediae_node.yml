@@ -12,8 +12,11 @@ process:
     plugin: default_value
     default_value: event
   title: title
-  nid: ebid
-  field_sessions: sbid
+  #nid: ebid
+  field_sessions:
+    plugin: migration
+    migration: medias_node
+    source: sbid
   field_dateonly: dt_event
   'body/value': eventbody
   'body/summary': eventbody
@@ -29,5 +32,4 @@ process:
     default_value: 0
 migration_dependencies:
   required:
-    - dyn_term
     - dyn_user

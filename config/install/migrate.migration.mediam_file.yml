@@ -1,12 +1,15 @@
 # Every migration that references a file by fid should specify this migration
 # as an optional dependency.
 id: mediam_file
+destination:
+  plugin: entity:file
+  source_path_property: filepath
+  urlencode: true
 source:
   plugin: mediam_file
 process:
-  ffid: fid
   filename: filename
-  uri: uri
+  uri: filepath
   filemime: filemime
   # filesize is dynamically computed when file entities are saved, so there is
   # no point in migrating it.
@@ -17,8 +20,3 @@ process:
   created: timestamp
   changed: timestamp
   uid: uid
-destination:
-  plugin: entity:file
-  source_path_property: filepath
-  urlencode: true
-

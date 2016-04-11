@@ -12,11 +12,21 @@ process:
     plugin: default_value
     default_value: sessions
   title: title
-  nid: sbid
   field_datetime: dt_session
   field_description: descrip
-  field_recordings: mediaentity
-  field_teacher: mbid
+  field_teacher:
+    plugin: migration
+    migration: media_node
+    source: 
+      - mbid
+  field_recordings:
+    plugin: migration
+    migration:
+      - mediamyt_media
+      - mediam_media
+    source: 
+      - meytbid
+      - mebid
   uid:
     plugin: migration
     migration: dyn_user
@@ -29,5 +39,4 @@ process:
     default_value: 0
 migration_dependencies:
   required:
-    - dyn_term
     - dyn_user

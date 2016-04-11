@@ -7,32 +7,39 @@
  * migration module.
  */
 
+
 function migrate_nd_setup_schema() {
+  $schema['migrate_nd_sestemp_node'] = migrate_nd_sestemp_schema_node();
+  $schema['migrate_nd_temp_node'] = migrate_nd_temp_schema_node();
+  $schema['migrate_nd_mdm_node'] = migrate_nd_mdm_schema_node();
+  $schema['migrate_nd_mdmyt_node'] = migrate_nd_mdmyt_schema_node();
   $schema['migrate_nd_dyn_account'] = migrate_nd_dyn_schema_account();
   $schema['migrate_nd_dyn_node'] = migrate_nd_dyn_schema_node();
   $schema['migrate_nd_dyn_topic'] = migrate_nd_dyn_schema_topic();
   $schema['migrate_nd_dyn_topic_node'] = migrate_nd_dyn_schema_topic_node();
+  $schema['migrate_nd_mdf_node'] = migrate_nd_mdf_schema_node();
   $schema['migrate_nd_md_node'] = migrate_nd_md_schema_node();
   $schema['migrate_nd_mds_node'] = migrate_nd_mds_schema_node();
+  $schema['migrate_nd_mdstemp_node'] = migrate_nd_mdstemp_schema_node();
   $schema['migrate_nd_mde_node'] = migrate_nd_mde_schema_node();
-  $schema['migrate_nd_mdm_node'] = migrate_nd_mdm_schema_node();
-  $schema['migrate_nd_mdmyt_node'] = migrate_nd_mdmyt_schema_node();
-  $schema['migrate_nd_mdf_node'] = migrate_nd_mdf_schema_node();
 
   return $schema;
 }
 
 function migrate_nd_setup_install() {
   // Populate our tables.
+  migrate_nd_sestemp_data_node();
+  migrate_nd_temp_data_node();
+  migrate_nd_mdmyt_data_node();
   migrate_nd_dyn_data_account();
   migrate_nd_dyn_data_node();
   migrate_nd_dyn_data_topic();
   migrate_nd_dyn_data_topic_node();
   migrate_nd_md_data_node();
   migrate_nd_mds_data_node();
+  migrate_nd_mdstemp_data_node();
   migrate_nd_mde_data_node();
   migrate_nd_mdm_data_node();
-  migrate_nd_mdmyt_data_node();
   migrate_nd_mdf_data_node();
 }
 function migrate_nd_md_schema_node() {
@@ -94,10 +101,70 @@ function migrate_nd_mds_schema_node() {
         'not null' => FALSE,
         'description' => 'Teacer Id of the id.',
       ),
-    'mediaentity' => array(
+    'meytbid' => array(
         'type' => 'int',
         'not null' => FALSE,
         'description' => 'Media Id of the id.',
+      ),
+      'eventid' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'description' => 'Media Id of the id.',
+      ),
+    ),
+    'primary key' => array('sbid'),
+  );
+}
+function migrate_nd_mdstemp_schema_node() {
+  return array(
+    'description' => 'Beers of the world.',
+    'fields' => array(
+      'sbid'  => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'Beer ID.',
+      ),
+      'title'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+       'dt_session' => array(
+        'type' => 'varchar', 
+        'length' => 255,
+        //'mysql_type' => 'timestamp',
+        'not null' => FALSE,
+        'description' => 'Full description.',
+      ),
+    'descrip' => array(
+        'type' => 'text',
+        'not null' => FALSE,
+        'description' => 'a',
+      ),
+    'aid' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'description' => 'Account Id of the author.',
+      ),
+    'mbid' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'description' => 'Teacer Id of the id.',
+      ),
+    'meytbid' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'description' => 'Media Id of the id.',
+      ),
+      'eventid' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'description' => 'Media Id of the id.',
+      ),
+       'originalsbid'  => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'Beer ID.',
       ),
     ),
     'primary key' => array('sbid'),
@@ -213,6 +280,79 @@ function migrate_nd_mdmyt_schema_node() {
       ),
     ),
     'primary key' => array('meytbid'),
+  );
+}
+function migrate_nd_temp_schema_node() {
+  return array(
+    'description' => 'Beers of the world.',
+    'fields' => array(
+      'meytbid'  => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'Media ID.',
+      ),
+      'title'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      
+     'aid' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'description' => 'Account Id of the author.',
+      ),
+    'uril'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    'filename'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('meytbid'),
+  );
+}
+function migrate_nd_sestemp_schema_node() {
+  return array(
+    'description' => 'Beers of the world.',
+    'fields' => array(
+      'title'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'dt_session'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      
+     'descrip' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    'Recordings'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    'Event'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+     'teachername'  => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    ),
+    
   );
 }
 
@@ -433,48 +573,210 @@ function migrate_nd_dyn_schema_account() {
 }
 
 function migrate_nd_md_data_node() {
+	
+  $q1 = db_select('Teacher', 't');
+  $obj=$q1->fields('t',array('Teacher'))//SELECT 
+        ->execute()->fetchAll();
+
+  $i=0;
+  foreach ( $obj as $obj1 ) {
+	$data[$i][0]=$i+1;
+    $data[$i][1]=$obj1->Teacher;
+    $data[$i][2]=1;
+    $i=$i+1;
+  }
+  //------------------------------------------------------------
   $fields = array('mbid', 'title','aid');
   $query = db_insert('migrate_nd_md_node')
            ->fields($fields);
-  // Use high mbid numbers to avoid overwriting an existing node id.
-  $data = array(
-    array('89999997', 'Gabriele Reifenberg',1), // comes with migrate_example project.
-    array('89999998', 'Heinz Roger',2),
-    array('89999999', 'Five Cram',1),
-    array('89999996', 'Iegor Reznikoff',1),
-  );
   foreach ($data as $row) {
     $query->values(array_combine($fields, $row));
   }
   $query->execute();
 }
 
-function migrate_nd_mds_data_node() {
-  $fields = array('sbid', 'title','dt_session','descrip','aid','mbid','mediaentity');
-  $query = db_insert('migrate_nd_mds_node')
+function migrate_nd_sestemp_data_node() {
+  
+  //------------------------------------------------------------
+  $q1 = db_select('sessiondata', 'sd');
+  $obj=$q1->fields('sd',array('title','dt_session','descrip','Recordings','Event',' teachername'))//SELECT 
+        ->execute()->fetchAll();
+  $i=0;
+  foreach ( $obj as $obj1 ) {
+	  
+	$xyz=explode(",",$obj1->Recordings);
+	$xyz_length=sizeof($xyz);
+	if($xyz_length>0)
+	{
+		for($rr=0;$rr<$xyz_length;$rr++)
+		{
+			$data[$i][0]=$obj1->title;
+			$data[$i][1]=$obj1->dt_session;
+			$data[$i][2]=$obj1->descrip;
+			$data[$i][3]=$xyz[$rr];
+			$data[$i][4]=$obj1->Event;
+			$data[$i][5]=$obj1->teachername;
+			$i=$i+1;
+		}
+	}
+	else
+	{
+		$data[$i][0]=$obj1->title;
+		$data[$i][1]=$obj1->dt_session;
+		$data[$i][2]=$obj1->descrip;
+		$data[$i][3]=$obj1->Recordings;
+		$data[$i][4]=$obj1->Event;
+		$data[$i][5]=$obj1->teachername;
+		$i=$i+1;
+	}
+}
+ $fields = array('title', 'dt_session','descrip','Recordings','Event','teachername');
+  $query = db_insert('migrate_nd_sestemp_node')
            ->fields($fields);
-  // Use high mbid numbers to avoid overwriting an existing node id.
-  $data = array(
-    array('99999997', 'Title1','2001-11-10T00:00:00','Description0','1','89999997','59999999'), // comes with migrate_example project.
-    array('99999998', 'Title2','2010-03-30T10:31:05','Description1','2','89999998','69999999'),
-    array('99999999', 'Title3','2010-03-30T10:31:05','Description2','1','89999996','59999999'),
-  );
+  
   foreach ($data as $row) {
     $query->values(array_combine($fields, $row));
   }
   $query->execute();
+
+}
+
+
+function migrate_nd_mds_data_node() {
+  
+  //------------------------------------------------------------
+  $q1 = db_select('migrate_nd_sestemp_node', 'sd');
+  $obj=$q1->fields('sd',array('title','dt_session','descrip','Recordings','Event',' teachername'))//SELECT 
+        ->execute()->fetchAll();
+  $i=0;
+  foreach ( $obj as $obj1 ) {
+	$data[$i][0]=$i+1;
+    $data[$i][1]=$obj1->title;
+    $data[$i][2]=$obj1->dt_session;
+    $data[$i][3]=$obj1->descrip;
+    $data[$i][4]=1;
+    //=============================Geting Teacher ID=======================================
+    
+    $obj12 = db_query("SELECT mbid FROM migrate_nd_md_node WHERE title ='".$obj1->teachername."'");//.$obj1->Teacher);
+
+    $teacherID=1;
+    foreach ( $obj12 as $obj123 ) {
+		if ($obj123->mbid>0 && $obj123->mbid!=null)
+		{
+		    $teacherID=$obj123->mbid;
+		}
+    }
+    $data[$i][5]=$teacherID;
+    //====================================================================   
+    $xyz = db_query("SELECT meytbid FROM migrate_nd_temp_node WHERE filename ='".$obj1->Recordings."'");
+    /**$q2 = db_select('migrate_nd_mdmyt_node', 'yt');
+    $xyz=$q2->fields('yt',array('meytbid'))//SELECT 
+          ->condition(filename,$obj1->Recordings)
+          ->execute()->fetchAll();*/
+    $recordingID=1;
+    foreach ( $xyz as $xyz1 ) {
+		if ($xyz1->meytbid>0 && $xyz1->meytbid!=null)
+		{
+		    $recordingID=$xyz1->meytbid;
+		}
+    }
+    $data[$i][6]=$recordingID;
+    $data[$i][7]=$obj1->Event;
+    
+    $i=$i+1;
+  }
+  //------------------------------------------------------------
+  $fields = array('sbid', 'title','dt_session','descrip','aid','mbid','meytbid','eventid');
+  $query = db_insert('migrate_nd_mds_node')
+           ->fields($fields);
+  
+  foreach ($data as $row) {
+    $query->values(array_combine($fields, $row));
+  }
+  $query->execute();
+
+}
+function migrate_nd_mdstemp_data_node() {
+	
+  $query = db_select('migrate_nd_mds_node', 'bt')
+  ->fields('bt', array('title'))->distinct();
+  $results = $query->execute();
+  $i=0;
+  foreach ($results as $obj123 ) {
+  $query1 = db_select('migrate_nd_mds_node', 'b')
+  ->fields('b', array('sbid', 'title','dt_session','descrip','aid','mbid','meytbid','eventid'))
+  ->condition('b.title', $obj123->title)
+  ->orderBy('sbid');
+  $results1 = $query1->execute();
+    foreach ( $results1 as $obj1 ) {
+		$data[$i][0]=$i+1;
+		$data[$i][1]=$obj1->title;
+		$data[$i][2]=$obj1->dt_session;
+		$data[$i][3]=$obj1->descrip;
+		$data[$i][4]=$obj1->aid;
+		$data[$i][5]=$obj1->mbid;
+		$data[$i][6]=$obj1->meytbid;
+		$data[$i][7]=$obj1->eventid;
+		$data[$i][8]=$obj1->sbid;
+		$i=$i+1;
+		break;
+	} 
+  } 
+  
+  
+  //------------------------------------------------------------
+  $fields = array('sbid', 'title','dt_session','descrip','aid','mbid','meytbid','eventid','originalsbid');
+  $query = db_insert('migrate_nd_mdstemp_node')
+           ->fields($fields);
+  
+  foreach ($data as $row) {
+    $query->values(array_combine($fields, $row));
+  }
+  $query->execute();
+
 }
 
 function migrate_nd_mde_data_node() {
+	
+	//------------------------------------------------------------
+  $q1 = db_select('event', 'e');
+  $obj=$q1->fields('e',array('Id','title','dt_event','eventbody'))//SELECT 
+        ->execute()->fetchAll();
+  $i=0;
+  foreach ( $obj as $obj1 ) {
+	$data[$i][0]=$obj1->Id;
+    $data[$i][1]=$obj1->title;
+    $data[$i][2]=$obj1->dt_event;
+    $data[$i][3]=$obj1->eventbody;
+    $data[$i][4]=1;
+    //=============================Geting Session ID=======================================
+    
+    $obj12 = db_query("SELECT sbid FROM migrate_nd_mds_node WHERE eventid ='".$obj1->Id."'");//.$obj1->Teacher);
+
+    $sessionID=1;
+    foreach ( $obj12 as $obj123 ) {
+		if ($obj123->sbid>0 && $obj123->sbid!=null)
+		{
+		    $sessionID=$obj123->sbid;
+		}
+    }
+    $data[$i][5]=$sessionID;
+    //====================================================================   
+    $i=$i+1;
+  }
+  //------------------------------------------------------------
+	
+	
+	
   $fields = array('ebid', 'title','dt_event','eventbody','aid','sbid');
   $query = db_insert('migrate_nd_mde_node')
            ->fields($fields);
   // Use high mbid numbers to avoid overwriting an existing node id.
-  $data = array(
+ /** $data = array(
     array('79999997', 'Event1','2001-11-10','EventBody0','1','99999997'), // comes with migrate_example project.
     array('79999998', 'Event2','2010-03-30','EventBody1','2','99999998'),
     array('79999999', 'Event3','2010-03-30','EventBody2','1','99999999'),
-  );
+  );*/
   foreach ($data as $row) {
     $query->values(array_combine($fields, $row));
   }
@@ -482,14 +784,29 @@ function migrate_nd_mde_data_node() {
 }
 
 function migrate_nd_mdm_data_node() {
+	//------------------------------------------------------------
+  $q1 = db_select('audio', 'a');
+  $obj=$q1->fields('a',array('title','Id'))//SELECT 
+        ->execute()->fetchAll();
+  $i=0;
+  foreach ( $obj as $obj1 ) {
+	$data[$i][0]=$i+1;
+    $data[$i][1]=$obj1->title;
+    $data[$i][2]=1;
+    $data[$i][3]='public://'.$obj1->Id;
+    $data[$i][4]=$obj1->Id;
+    
+    $i=$i+1;
+  }
+  //------------------------------------------------------------
   $fields = array('mebid', 'title','aid','uril','filename');
   $query = db_insert('migrate_nd_mdm_node')
            ->fields($fields);
   // Use high mbid numbers to avoid overwriting an existing node id.
-  $data = array(
+  /**$data = array(
        array('69999999', 'Media3','1','public://2016-03/2637890.txt
 ','2637890.txt'),
-  );
+  );*/
   foreach ($data as $row) {
     $query->values(array_combine($fields, $row));
   }
@@ -498,14 +815,75 @@ function migrate_nd_mdm_data_node() {
 }
 
 function migrate_nd_mdmyt_data_node() {
+	$obj12 = db_query("SELECT count(mebid) as mebid FROM migrate_nd_mdm_node");//.$obj1->Teacher);
+
+    $sessionID=0;
+    foreach ( $obj12 as $obj123 ) {
+	  $sessionID=$obj123->mebid;
+    }
+    
+	//------------------------------------------------------------
+  $q1 = db_select('youtube', 'y');
+  $obj=$q1->fields('y',array('title','length','Id'))//SELECT 
+        ->execute()->fetchAll();
+  $i=$sessionID;
+  foreach ( $obj as $obj1 ) {
+	$data[$i][0]=$i+1;
+    $data[$i][1]=$obj1->title;
+    $data[$i][2]=1;
+    $data[$i][3]=$obj1->Id;
+    $data[$i][4]=$obj1->Id;
+    
+    $i=$i+1;
+  }
+  
+  //-----------------------------------------------------------
   $fields = array('meytbid', 'title','aid','uril','filename');
   $query = db_insert('migrate_nd_mdmyt_node')
            ->fields($fields);
-  // Use high mbid numbers to avoid overwriting an existing node id.
-  $data = array(
-       array('59999999', 'YouTube1','1','http://www.drupal.org/node/2637890
-','2637890.txt'),
-  );
+  
+  foreach ($data as $row) {
+    $query->values(array_combine($fields, $row));
+  }
+  $query->execute();
+}
+
+function migrate_nd_temp_data_node() {
+	 //------------------------------------------------------------
+  $q1 = db_select('audio', 'a');
+  $obj=$q1->fields('a',array('title','Id'))//SELECT 
+        ->execute()->fetchAll();
+  $i=0;
+  foreach ( $obj as $obj1 ) {
+	$data[$i][0]=$i+1;
+    $data[$i][1]=$obj1->title;
+    $data[$i][2]=1;
+    $data[$i][3]=$obj1->Id;
+    $data[$i][4]=$obj1->Id;
+    
+    $i=$i+1;
+  }
+ //------------------------------------------------------------
+  $q1 = db_select('youtube', 'y');
+  $obj=$q1->fields('y',array('title','length','Id'))//SELECT 
+        ->execute()->fetchAll();
+  
+  foreach ( $obj as $obj1 ) {
+	$data[$i][0]=$i+1;
+    $data[$i][1]=$obj1->title;
+    $data[$i][2]=1;
+    $data[$i][3]=$obj1->Id;
+    $data[$i][4]=$obj1->Id;
+    
+    $i=$i+1;
+  }
+  //-----------------------------------------------------------
+	
+	
+  $fields = array('meytbid', 'title','aid','uril','filename');
+  $query = db_insert('migrate_nd_temp_node')
+           ->fields($fields);
+  
   foreach ($data as $row) {
     $query->values(array_combine($fields, $row));
   }
@@ -513,33 +891,35 @@ function migrate_nd_mdmyt_data_node() {
 }
 
 function migrate_nd_mdf_data_node() {
+	$obj12 = db_query("SELECT mebid,aid,uril,filename FROM migrate_nd_mdm_node");
+
+    $i=0;
+    foreach ( $obj12 as $obj123 ) {
+	  $data[$i][0]=$obj123->mebid;
+      $data[$i][1]=$obj123->aid;
+      $data[$i][2]=$obj123->filename;
+      $data[$i][3]='public://2016-03';//$obj123->uril;
+      $data[$i][4]='text/plain';
+      $data[$i][5]='1';
+      $data[$i][6]='1458563370';
+      $data[$i][7]=$obj123->uril;
+      $i=$i+1;
+    }
+    //-----------------------------------------------------------
+
   $fields = array('fid', 'uid','filename','filepath','filemime','status','timestamp','uri');
   $query = db_insert('migrate_nd_mdf_node')
            ->fields($fields);
   // Use high mbid numbers to avoid overwriting an existing node id.
-  $data = array(
-       array('123', '1','LICENSE.txt','/var/www/html/Partha/xyz/','text/plain','1','1458563370','public://ARITMIGRATE/LICENSE.txt'),
-  );
+  /**$data = array(
+       array('123', '1','LICENSE.txt','/var/www/html/Partha/xyz/','text/plain','1','1458563370','public://2016-03/LICENSE.txt'),
+  );*/
   foreach ($data as $row) {
     $query->values(array_combine($fields, $row));
   }
   $query->execute();
+  //'audio/mpeg'
   
-  
-  
-  
-  
-  $fields = array('fid', 'uid','filename','uuid','filemime','status','created','uri','langcode','changed','filesize');
-  $query = db_insert('file_managed')
-           ->fields($fields);
-  // Use high mbid numbers to avoid overwriting an existing node id.
-  $data = array(
-       array('69999999', '1','2637890.txt','qw12','text/plain','1','1458563370','public://ARITMIGRATE/2637890.txt','en','1458563370','11'),
-  );
-  foreach ($data as $row) {
-    $query->values(array_combine($fields, $row));
-  }
-  $query->execute();
 }
 
 

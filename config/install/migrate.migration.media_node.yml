@@ -12,7 +12,7 @@ process:
     plugin: default_value
     default_value: teacher
   title: title
-  nid: mbid
+  #nid: mbid
   uid:
     plugin: migration
     migration: dyn_user

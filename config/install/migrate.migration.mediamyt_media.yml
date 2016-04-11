@@ -12,7 +12,7 @@ process:
     default_value: youtube
   name: title
   uid: aid
-  mid: meytbid
+  #mid: meytbid
   status:
     plugin: default_value
     default_value: 0
