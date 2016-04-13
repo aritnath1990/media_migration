@@ -86,7 +86,7 @@ class MediaeNode extends SqlBase {
  
       
     $row->setSourceProperty('sbid', $sbidr);
-
+    $row->setSourceProperty('eventbody', "Hi iam try to check to send multiple value using row");
     return parent::prepareRow($row);
   }
 

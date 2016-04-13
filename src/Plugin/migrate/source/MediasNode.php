@@ -51,6 +51,7 @@ class MediasNode extends SqlBase {
       'aid' => $this->t('Auther'),
       'mbid' => $this->t('Teacher id'),
       'meytbid' => $this->t('mediaentity id'),
+      'mebid' =>  $this->t('mebid id'),
     ];
 
     return $fields;
@@ -82,9 +83,49 @@ class MediasNode extends SqlBase {
                  ->fields('bt', ['meytbid'])
       ->condition('meytbid', $row->getSourceProperty('meytbid'))
       ->execute()
-      ->fetchCol();
-    $row->setSourceProperty('meytbid', $sbidref);*/
+      ->fetchCol();*/
+      //=========================================
+      
+        $fields = array('bbid', 'style');
 
+
+  $obj = db_query('SELECT title FROM migrate_nd_mdstemp_node WHERE sbid='.$row->getSourceProperty('sbid'));
+
+  $i=0;
+      $j=0;
+      $j1=0;
+      
+      foreach($obj as $obj1)
+      {
+		  $q1 = db_query("SELECT recordings FROM migrate_nd_sestemp_node WHERE title='".$obj1->title."'");
+          foreach($q1 as $r)
+           {
+			   $data1[$i]=$r->recordings;
+			   $i=$i+1;
+		   }
+	  }
+	  $data1count=count($data1);
+      for ($xyz=0;$xyz<$data1count;$xyz++)
+	  {
+		  $q2 = db_query("SELECT meytbid FROM migrate_nd_mdmyt_node WHERE filename='".$data1[$xyz]."'");
+		  
+          foreach($q2 as $r2)
+          {
+			  $meytbidref[$j]=$r2->meytbid;
+			  $j=$j+1;
+		  }
+          
+          $q3 = db_query("SELECT mebid FROM migrate_nd_mdm_node WHERE filename='".$data1[$xyz]."'");
+          foreach($q3 as $r3)
+          {
+			  $mebidref[$j1]=$r3->mebid;
+			  $j1=$j1+1;
+		  }
+      }
+
+      
+    $row->setSourceProperty('meytbid', $meytbidref);
+    $row->setSourceProperty('mebid',$mebidref);
     return parent::prepareRow($row);
   }
 

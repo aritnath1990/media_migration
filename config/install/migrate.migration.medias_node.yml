@@ -21,12 +21,12 @@ process:
       - mbid
   field_recordings:
     plugin: migration
-    migration:
-      - mediamyt_media
+    migration: 
       - mediam_media
-    source: 
-      - meytbid
+      - mediamyt_media
+    source_ids:
       - mebid
+      - meytbid
   uid:
     plugin: migration
     migration: dyn_user
