@@ -107,19 +107,19 @@ class MediasNode extends SqlBase {
 	  $data1count=count($data1);
       for ($xyz=0;$xyz<$data1count;$xyz++)
 	  {
-		  $q2 = db_query("SELECT meytbid FROM migrate_nd_mdmyt_node WHERE filename='".$data1[$xyz]."'");
+		  $q2 = db_query("SELECT mid FROM media_field_data WHERE name =(SELECT title FROM migrate_nd_mdmyt_node WHERE filename='".$data1[$xyz]."')");
 		  
           foreach($q2 as $r2)
           {
-			  $meytbidref[$j]=$r2->meytbid;
+			  $meytbidref[$j]=$r2->mid;
 			  $j=$j+1;
 		  }
           
-          $q3 = db_query("SELECT mebid FROM migrate_nd_mdm_node WHERE filename='".$data1[$xyz]."'");
+          $q3 = db_query("SELECT mid FROM media_field_data WHERE name =(SELECT title FROM migrate_nd_mdm_node WHERE filename='".$data1[$xyz]."')");
           foreach($q3 as $r3)
           {
-			  $mebidref[$j1]=$r3->mebid;
-			  $j1=$j1+1;
+			  $meytbidref[$j]=$r3->mid;
+			  $j=$j+1;
 		  }
       }
 

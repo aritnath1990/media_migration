@@ -19,14 +19,7 @@ process:
     migration: media_node
     source: 
       - mbid
-  field_recordings:
-    plugin: migration
-    migration: 
-      - mediam_media
-      - mediamyt_media
-    source_ids:
-      - mebid
-      - meytbid
+  field_recordings: meytbid
   uid:
     plugin: migration
     migration: dyn_user
