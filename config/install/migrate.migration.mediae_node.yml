@@ -12,7 +12,6 @@ process:
     plugin: default_value
     default_value: event
   title: title
-  #nid: ebid
   field_sessions:
     plugin: migration
     migration: medias_node

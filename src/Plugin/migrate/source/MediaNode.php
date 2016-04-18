@@ -68,19 +68,7 @@ class MediaNode extends SqlBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    /**
-     * As explained above, we need to pull the style relationships into our
-     * source row here, as an array of 'style' values (the unique ID for
-     * the media_term migration).
-     */
-    /**$terms = $this->select('media_mg_media_topic_node', 'bt')
-                 ->fields('bt', ['style'])
-      ->condition('bbid', $row->getSourceProperty('bbid'))
-      ->execute()
-      ->fetchCol();
-    $row->setSourceProperty('terms', $terms);*/
-
-    return parent::prepareRow($row);
+   return parent::prepareRow($row);
   }
 
 }

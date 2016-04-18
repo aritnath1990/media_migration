@@ -11,12 +11,7 @@ process:
   filename: filename
   uri: filepath
   filemime: filemime
-  # filesize is dynamically computed when file entities are saved, so there is
-  # no point in migrating it.
-  # filesize: filesize
   status: status
-  # Drupal 7 didn't keep track of the file's creation or update time -- all it
-  # had was the vague "timestamp" column. So we'll use it for both.
   created: timestamp
   changed: timestamp
   uid: uid

@@ -44,14 +44,14 @@ class MediasNode extends SqlBase {
    */
   public function fields() {
     $fields = [
-      'sbid' => $this->t('Ssd ID'),
-      'title' => $this->t('Title of ssd'),
-      'dt_session' => $this->t('Ssd date'),
-      'descrip' => $this->t('Title of description'),
-      'aid' => $this->t('Auther'),
+      'sbid' => $this->t('Session ID'),
+      'title' => $this->t('Title of Session'),
+      'dt_session' => $this->t('Session date'),
+      'descrip' => $this->t('Session description'),
+      'aid' => $this->t('Autherid'),
       'mbid' => $this->t('Teacher id'),
-      'meytbid' => $this->t('mediaentity id'),
-      'mebid' =>  $this->t('mebid id'),
+      'meytbid' => $this->t('Media youtube id'),
+      'mebid' =>  $this->t('Media Audio id'),
     ];
 
     return $fields;
@@ -77,32 +77,20 @@ class MediasNode extends SqlBase {
      * As explained above, we need to pull the style relationships into our
      * source row here, as an array of 'style' values (the unique ID for
      * the media_term migration).
-     */
-    
-    /**$sbidref = $this->select('migrate_nd_mdmyt_node', 'bt')
-                 ->fields('bt', ['meytbid'])
-      ->condition('meytbid', $row->getSourceProperty('meytbid'))
-      ->execute()
-      ->fetchCol();*/
-      //=========================================
-      
-        $fields = array('bbid', 'style');
-
-
-  $obj = db_query('SELECT title FROM migrate_nd_mdstemp_node WHERE sbid='.$row->getSourceProperty('sbid'));
-
-  $i=0;
-      $j=0;
-      $j1=0;
-      
-      foreach($obj as $obj1)
+     */      
+     $fields = array('bbid', 'style');
+    $obj = db_query('SELECT title FROM migrate_nd_mdstemp_node WHERE sbid='.$row->getSourceProperty('sbid'));
+    $i=0;
+    $j=0;
+    $j1=0;
+    foreach($obj as $obj1)
       {
-		  $q1 = db_query("SELECT recordings FROM migrate_nd_sestemp_node WHERE title='".$obj1->title."'");
-          foreach($q1 as $r)
-           {
-			   $data1[$i]=$r->recordings;
-			   $i=$i+1;
-		   }
+	    $q1 = db_query("SELECT recordings FROM migrate_nd_sestemp_node WHERE title='".$obj1->title."'");
+        foreach($q1 as $r)
+         {
+		   $data1[$i]=$r->recordings;
+		   $i=$i+1;
+		 }
 	  }
 	  $data1count=count($data1);
       for ($xyz=0;$xyz<$data1count;$xyz++)

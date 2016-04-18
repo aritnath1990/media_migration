@@ -44,11 +44,11 @@ class MediamytMedia extends SqlBase {
    */
   public function fields() {
     $fields = [
-      'meytbid' => $this->t('Ssd ID'),
-      'title' => $this->t('Title of ssd'),
-      'aid' => $this->t('Auther'),
-      'uril' => $this->t('Auther'),
-      'filename' => $this->t('Auther'),
+      'meytbid' => $this->t('Media youtube ID'),
+      'title' => $this->t('Title of Media title'),
+      'aid' => $this->t('Auther id'),
+      'uril' => $this->t('url of file'),
+      'filename' => $this->t('file name'),
 
     ];
 
@@ -77,7 +77,7 @@ class MediamytMedia extends SqlBase {
     $row->setSourceProperty('uril', $filepath);
     // Retrieve the filename as our process plugin require it.
     $file_name = $row->getSourceProperty('filename');
-    // Set the row property "name".
+    // Set the row property "file name".
     $row->setSourceProperty('filename', $file_name);
     return parent::prepareRow($row);
   }
