@@ -19,7 +19,7 @@ process:
   promote:
     plugin: default_value
     default_value: 0
-  field_dropbox : mebid
+  field_dropbox: fid
 migration_dependencies:
   required:
     - dyn_user

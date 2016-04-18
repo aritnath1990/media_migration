@@ -62,6 +62,14 @@ class MediamFile extends SqlBase {
    */
   public function getIds() {
     return [
+      'filename' => [
+        'type' => 'string',
+        'alias' => 'b',
+      ],
+      'filepath' => [
+        'type' => 'string',
+        'alias' => 'b',
+      ],
       'fid' => [
         'type' => 'integer',
         'alias' => 'b',
@@ -75,8 +83,12 @@ class MediamFile extends SqlBase {
   public function prepareRow(Row $row) {
    // Row is a now a class with helpful methods.
     // Set the complete external path to the image.
-    
-   
+$filename=$row->getSourceProperty('filename');
+$filename=str_replace("/","",$filename);
+$filepath=$row->getSourceProperty('filepath');
+$filepath=$filepath ."/".$filename;
+   $row->setSourceProperty('filename',$filename);
+    $row->setSourceProperty('filepath',$filepath);
     return parent::prepareRow($row);
   }
 }

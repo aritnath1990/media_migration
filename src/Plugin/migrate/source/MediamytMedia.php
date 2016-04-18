@@ -72,6 +72,7 @@ class MediamytMedia extends SqlBase {
    */
   public function prepareRow(Row $row) {
      $filepath = $row->getSourceProperty('uril');
+     $filepath="https://www.youtube.com/watch?v=".$filepath;
     // We update the file path from the row within the local path in our computer.
     $row->setSourceProperty('uril', $filepath);
     // Retrieve the filename as our process plugin require it.

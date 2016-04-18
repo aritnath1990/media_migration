@@ -49,7 +49,7 @@ class MediamMedia extends SqlBase {
       'aid' => $this->t('Auther'),
       'uril' => $this->t('Auther'),
       'filename' => $this->t('Auther'),
-
+      'fid' => $this->t('Auther'),
     ];
 
     return $fields;
@@ -64,6 +64,10 @@ class MediamMedia extends SqlBase {
         'type' => 'integer',
         'alias' => 'b',
       ],
+      'filename' => [
+        'type' => 'string',
+        'alias' => 'b',
+      ],
     ];
   }
 
@@ -73,8 +77,25 @@ class MediamMedia extends SqlBase {
   public function prepareRow(Row $row) {
    // Row is a now a class with helpful methods.
     // Set the complete external path to the image.
-    
    
+    
+    
+    
+   $filename=$row->getSourceProperty('filename');
+   $filename=str_replace("/","",$filename);
+   
+   
+    $j=0;
+     $q3 = db_query("SELECT destid1 FROM migrate_map_mediam_file  WHERE sourceid1 ='". $filename ."'");
+          foreach($q3 as $r3)
+          {
+			  $fileid[$j]=$r3->destid1;
+			  $j=$j+1;
+		  }
+   
+   
+   $row->setSourceProperty('filename',$filename);
+   $row->setSourceProperty('fid',$fileid);
     return parent::prepareRow($row);
   }
 }
