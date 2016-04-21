@@ -107,7 +107,9 @@ function migrate_nd_mds_schema_node() {
         'description' => 'Media Id of the id.',
       ),
       'eventid' => array(
-        'type' => 'int',
+        //'type' => 'int',
+        'type' => 'varchar', 
+        'length' => 20,
         'not null' => FALSE,
         'description' => 'Media Id of the id.',
       ),
@@ -156,7 +158,9 @@ function migrate_nd_mdstemp_schema_node() {
         'description' => 'Media Id of the id.',
       ),
       'eventid' => array(
-        'type' => 'int',
+        //'type' => 'int',
+        'type' => 'varchar', 
+        'length' => 255,
         'not null' => FALSE,
         'description' => 'Media Id of the id.',
       ),
@@ -880,7 +884,7 @@ function migrate_nd_mdf_data_node() {
        $data[$i][0]=$obj123->mebid;
      $data[$i][1]=$obj123->aid;
       $data[$i][2]=$obj123->filename;
-      $data[$i][3]='public://2016-03';//$obj123->uril;
+      $data[$i][3]='https://www.dropbox.com/home?preview=';//$obj123->uril;
       $data[$i][4]='text/plain';
       $data[$i][5]='1';
       $data[$i][6]='1458563370';

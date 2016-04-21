@@ -57,3 +57,38 @@ process:
   changed: '@created'
   access: '@created'
   login: '@created'
+
+  # Yet another new process plugin - static_map. We're making a transformation
+  # in how we represent gender data - formerly it was integer values 0 for male
+  # and 1 for female, but in our modern Drupal site we will be making this a
+  # free-form text field, so we want to replace the obscure integers with
+  # simple strings.
+  field_migrate_nd_gender:
+    plugin: static_map
+    # Specify the source field we're reading (containing 0's and 1's).
+    source: sex
+    # Tell it to transform 0 to 'Male', and 1 to 'Female'.
+    map:
+      0: Male
+      1: Female
+
+  field_migrate_nd_favdyns: dyns
+  # The following is blocked on https://www.drupal.org/node/2590993.
+
+  # This looks like a simple migration process plugin, but there's magic
+  # happening here. We import nodes after terms and users, because they have
+  # references to terms and users, so of course the terms and users must be
+  # migrated first - right? However, the favdyns field is a reference to the
+  # dyn nodes which haven't yet been migrated - we have a circular relationship
+  # between users and nodes. The way the migration system resolves this
+  # situation is by creating stubs. In this case, because no dyn nodes have
+  # been created, each time a dyn is looked up against the dyn_node migration
+  # nothing is found, and by default the migration process plugin creates an
+  # empty stub node as a placeholder so the favdyns reference field has
+  # something to point to. The stub is recorded in the dyn_node map table, so
+  # when that migration runs it knows that each incoming dyn should overwrite
+  # its stub instead of creating a new node.
+#  field_migrate_nd_favdyns:
+#    plugin: migration
+#    source: dyns
+#    migration: dyn_node

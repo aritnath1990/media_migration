@@ -78,9 +78,10 @@ class MediasNode extends SqlBase {
      * source row here, as an array of 'style' values (the unique ID for
      * the media_term migration).
      */      
-     $fields = array('bbid', 'style');
+     //$fields = array('bbid', 'style');
     $obj = db_query('SELECT title FROM migrate_nd_mdstemp_node WHERE sbid='.$row->getSourceProperty('sbid'));
     $i=0;
+    $i1=0;
     $j=0;
     $j1=0;
     foreach($obj as $obj1)
@@ -91,7 +92,14 @@ class MediasNode extends SqlBase {
 		   $data1[$i]=$r->recordings;
 		   $i=$i+1;
 		 }
+		$q10 = db_query("SELECT teachername FROM sessiondata WHERE title='".$obj1->title."'");
+        foreach($q10 as $r10)
+         {
+		   $teachername=$r10->teachername;
+		   
+		 }
 	  }
+	  
 	  $data1count=count($data1);
       for ($xyz=0;$xyz<$data1count;$xyz++)
 	  {
@@ -111,9 +119,22 @@ class MediasNode extends SqlBase {
 		  }
       }
 
-      
+	  $teachername1=explode(',',$teachername);
+	  $t1=count($teachername1);
+	   for ($xyz1=0;$xyz1<$t1;$xyz1++)
+	  {
+	  $q101 = db_query("SELECT mbid FROM migrate_nd_md_node WHERE title ='".$teachername1[$xyz1]."'");
+        foreach($q101 as $r101)
+         {
+		   $data[$i1]=$r101->mbid;
+		   $i1=$i1+1;
+		   break;
+		 }
+	  }
+    $row->setSourceProperty('mbid',$data);  
     $row->setSourceProperty('meytbid', $meytbidref);
     $row->setSourceProperty('mebid',$mebidref);
+    
     return parent::prepareRow($row);
   }
 

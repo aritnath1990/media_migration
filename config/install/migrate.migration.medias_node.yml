@@ -17,8 +17,7 @@ process:
   field_teacher:
     plugin: migration
     migration: media_node
-    source: 
-      - mbid
+    source: mbid
   field_recordings: meytbid
   uid:
     plugin: migration
