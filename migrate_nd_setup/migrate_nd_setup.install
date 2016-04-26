@@ -881,6 +881,16 @@ function migrate_nd_mdf_data_node() {
 
     $i=0;
     foreach ( $obj12 as $obj123 ) {
+      $data[$i][0]=str_replace("/","",$obj123->filename);
+      $data[$i][1]='https://www.dropbox.com/home/testfolder?preview='.str_replace("/","",$obj123->filename);
+      $data[$i][2]='text/plain';
+      $data[$i][3]='1';//$obj123->uril;
+      $data[$i][4]='1458563370';
+      $data[$i][5]='1458563370';
+      $data[$i][6]=$i+3;
+      $data[$i][7]='en';
+      $i=$i+1;
+		/**
        $data[$i][0]=$obj123->mebid;
      $data[$i][1]=$obj123->aid;
       $data[$i][2]=$obj123->filename;
@@ -889,13 +899,23 @@ function migrate_nd_mdf_data_node() {
       $data[$i][5]='1';
       $data[$i][6]='1458563370';
       $data[$i][7]=$obj123->uril;
-      $i=$i+1;
+      $i=$i+1;*/
     }
     //-----------------------------------------------------------
 
- $fields = array('fid', 'uid','filename','filepath','filemime','status','timestamp','uri');
+ /**$fields = array('fid', 'uid','filename','filepath','filemime','status','timestamp','uri');
   $query = db_insert('migrate_nd_mdf_node')
            ->fields($fields);
+  foreach ($data as $row) {
+    $query->values(array_combine($fields, $row));
+  }
+  $query->execute();
+  //'audio/mpeg'*/
+  
+   $fields = array('filename','uri','filemime','status','created','changed','uuid','langcode');
+  $query = db_insert('file_managed')
+           ->fields($fields);
+  
   foreach ($data as $row) {
     $query->values(array_combine($fields, $row));
   }

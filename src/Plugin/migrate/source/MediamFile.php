@@ -86,7 +86,7 @@ class MediamFile extends SqlBase {
 $filename=$row->getSourceProperty('filename');
 $filename=str_replace("/","",$filename);
 $filepath=$row->getSourceProperty('filepath');
-$filepath=$filepath ."/".$filename;
+$filepath=$filepath.$filename;
    $row->setSourceProperty('filename',$filename);
     $row->setSourceProperty('filepath',$filepath);
     return parent::prepareRow($row);
