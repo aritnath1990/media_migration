@@ -114,7 +114,8 @@ function migrate_nd_mds_schema_node() {
         'description' => 'Media Id of the id.',
       ),
       'old_id'  => array(
-        'type' => 'int',
+        'type' => 'varchar', 
+        'length' => 20,
         'not null' => FALSE,
         'description' => 'Beer ID.',
       ),
@@ -175,7 +176,8 @@ function migrate_nd_mdstemp_schema_node() {
         'description' => 'Beer ID.',
       ),
       'old_id'  => array(
-        'type' => 'int',
+        'type' => 'varchar', 
+        'length' => 20,
         'not null' => FALSE,
         'description' => 'Beer ID.',
       ),
@@ -364,7 +366,8 @@ function migrate_nd_sestemp_schema_node() {
         'not null' => TRUE,
       ),
       'old_id'  => array(
-        'type' => 'int',
+        'type' => 'varchar', 
+        'length' => 20,
         'not null' => FALSE,
         'description' => 'Beer ID.',
       ),
