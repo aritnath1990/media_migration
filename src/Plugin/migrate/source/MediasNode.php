@@ -35,7 +35,7 @@ class MediasNode extends SqlBase {
      * below.
      */
     $query = $this->select('migrate_nd_mdstemp_node', 'b')
-                 ->fields('b', ['sbid', 'title','dt_session','descrip','aid','mbid','meytbid']);
+                 ->fields('b', ['sbid', 'title','dt_session','descrip','aid','mbid','meytbid','old_id']);
     return $query;
   }
 
@@ -52,6 +52,8 @@ class MediasNode extends SqlBase {
       'mbid' => $this->t('Teacher id'),
       'meytbid' => $this->t('Media youtube id'),
       'mebid' =>  $this->t('Media Audio id'),
+      'old_id' =>  $this->t('Teachings tags reference id'),
+      'terms' => $this->t('Applicable styles'),
     ];
 
     return $fields;
@@ -131,10 +133,17 @@ class MediasNode extends SqlBase {
 		   break;
 		 }
 	  }
+	  
+	  $terms = $this->select('migrate_nd_dyn_topic_node', 'bt')
+                 ->fields('bt', ['style'])
+      ->condition('bbid', $row->getSourceProperty('old_id'))
+      ->execute()
+      ->fetchCol();
+    
     $row->setSourceProperty('mbid',$data);  
     $row->setSourceProperty('meytbid', $meytbidref);
     $row->setSourceProperty('mebid',$mebidref);
-    
+    $row->setSourceProperty('terms', $terms);
     return parent::prepareRow($row);
   }
 

@@ -113,6 +113,11 @@ function migrate_nd_mds_schema_node() {
         'not null' => FALSE,
         'description' => 'Media Id of the id.',
       ),
+      'old_id'  => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'description' => 'Beer ID.',
+      ),
     ),
     'primary key' => array('sbid'),
   );
@@ -167,6 +172,11 @@ function migrate_nd_mdstemp_schema_node() {
        'originalsbid'  => array(
         'type' => 'int',
         'not null' => TRUE,
+        'description' => 'Beer ID.',
+      ),
+      'old_id'  => array(
+        'type' => 'int',
+        'not null' => FALSE,
         'description' => 'Beer ID.',
       ),
     ),
@@ -352,6 +362,11 @@ function migrate_nd_sestemp_schema_node() {
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
+      ),
+      'old_id'  => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'description' => 'Beer ID.',
       ),
     ),
     
@@ -600,7 +615,7 @@ function migrate_nd_sestemp_data_node() {
   
   //------------------------------------------------------------
   $q1 = db_select('sessiondata', 'sd');
-  $obj=$q1->fields('sd',array('title','dt_session','descrip','Recordings','Event',' teachername'))//SELECT 
+  $obj=$q1->fields('sd',array('title','dt_session','descrip','Recordings','Event',' teachername','old_id'))//SELECT 
         ->execute()->fetchAll();
   $i=0;
   foreach ( $obj as $obj1 ) {
@@ -617,6 +632,7 @@ function migrate_nd_sestemp_data_node() {
 			$data[$i][3]=$xyz[$rr];
 			$data[$i][4]=$obj1->Event;
 			$data[$i][5]=$obj1->teachername;
+			$data[$i][6]=$obj1->old_id;
 			$i=$i+1;
 		}
 	}
@@ -628,10 +644,11 @@ function migrate_nd_sestemp_data_node() {
 		$data[$i][3]=$obj1->Recordings;
 		$data[$i][4]=$obj1->Event;
 		$data[$i][5]=$obj1->teachername;
+		$data[$i][6]=$obj1->old_id;
 		$i=$i+1;
 	}
 }
- $fields = array('title', 'dt_session','descrip','Recordings','Event','teachername');
+ $fields = array('title', 'dt_session','descrip','Recordings','Event','teachername','old_id');
   $query = db_insert('migrate_nd_sestemp_node')
            ->fields($fields);
   
@@ -647,7 +664,7 @@ function migrate_nd_mds_data_node() {
   
   //------------------------------------------------------------
   $q1 = db_select('migrate_nd_sestemp_node', 'sd');
-  $obj=$q1->fields('sd',array('title','dt_session','descrip','Recordings','Event',' teachername'))//SELECT 
+  $obj=$q1->fields('sd',array('title','dt_session','descrip','Recordings','Event',' teachername','old_id'))//SELECT 
         ->execute()->fetchAll();
   $i=0;
   foreach ( $obj as $obj1 ) {
@@ -679,11 +696,11 @@ function migrate_nd_mds_data_node() {
     }
     $data[$i][6]=$recordingID;
     $data[$i][7]=$obj1->Event;
-    
+    $data[$i][8]=$obj1->old_id;
     $i=$i+1;
   }
   //------------------------------------------------------------
-  $fields = array('sbid', 'title','dt_session','descrip','aid','mbid','meytbid','eventid');
+  $fields = array('sbid', 'title','dt_session','descrip','aid','mbid','meytbid','eventid','old_id');
   $query = db_insert('migrate_nd_mds_node')
            ->fields($fields);
   
@@ -701,7 +718,7 @@ function migrate_nd_mdstemp_data_node() {
   $i=0;
   foreach ($results as $obj123 ) {
   $query1 = db_select('migrate_nd_mds_node', 'b')
-  ->fields('b', array('sbid', 'title','dt_session','descrip','aid','mbid','meytbid','eventid'))
+  ->fields('b', array('sbid', 'title','dt_session','descrip','aid','mbid','meytbid','eventid','old_id'))
   ->condition('b.title', $obj123->title)
   ->orderBy('sbid');
   $results1 = $query1->execute();
@@ -715,6 +732,7 @@ function migrate_nd_mdstemp_data_node() {
 		$data[$i][6]=$obj1->meytbid;
 		$data[$i][7]=$obj1->eventid;
 		$data[$i][8]=$obj1->sbid;
+		$data[$i][9]=$obj1->old_id;
 		$i=$i+1;
 		break;
 	} 
@@ -722,7 +740,7 @@ function migrate_nd_mdstemp_data_node() {
   
   
   //------------------------------------------------------------
-  $fields = array('sbid', 'title','dt_session','descrip','aid','mbid','meytbid','eventid','originalsbid');
+  $fields = array('sbid', 'title','dt_session','descrip','aid','mbid','meytbid','eventid','originalsbid','old_id');
   $query = db_insert('migrate_nd_mdstemp_node')
            ->fields($fields);
   

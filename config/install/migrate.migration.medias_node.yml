@@ -18,6 +18,10 @@ process:
     plugin: migration
     migration: media_node
     source: mbid
+  field_tags:
+    plugin: migration
+    migration: dyn_term
+    source: terms
   field_recordings: meytbid
   uid:
     plugin: migration
@@ -32,3 +36,4 @@ process:
 migration_dependencies:
   required:
     - dyn_user
+    - dyn_term
