@@ -164,7 +164,6 @@ function migrate_nd_mdstemp_schema_node() {
         'description' => 'Media Id of the id.',
       ),
       'eventid' => array(
-        //'type' => 'int',
         'type' => 'varchar', 
         'length' => 255,
         'not null' => FALSE,
@@ -769,7 +768,7 @@ function migrate_nd_mde_data_node() {
     $data[$i][4]=1;
     //=============================Geting Session ID=======================================
     
-    $obj12 = db_query("SELECT sbid FROM migrate_nd_mds_node WHERE eventid ='".$obj1->Id."'");//.$obj1->Teacher);
+    $obj12 = db_query("SELECT sbid FROM migrate_nd_mds_node WHERE eventid ='".$obj1->Id."'");
 
     $sessionID=1;
     foreach ( $obj12 as $obj123 ) {
@@ -822,7 +821,7 @@ function migrate_nd_mdm_data_node() {
 }
 
 function migrate_nd_mdmyt_data_node() {
-	$obj12 = db_query("SELECT count(mebid) as mebid FROM migrate_nd_mdm_node");//.$obj1->Teacher);
+	$obj12 = db_query("SELECT count(mebid) as mebid FROM migrate_nd_mdm_node");
 
     $sessionID=0;
     foreach ( $obj12 as $obj123 ) {
@@ -903,17 +902,17 @@ function migrate_nd_mdf_data_node() {
     $i=0;
     foreach ( $obj12 as $obj123 ) {
       $data[$i][0]=str_replace("/","",$obj123->filename);
-      $data[$i][1]='dropboxexample://testfolder/'.str_replace("/","",$obj123->filename);//'https://www.dropbox.com/home/testfolder?preview='.str_replace("/","",$obj123->filename);
+      $data[$i][1]='dropboxexample://testfolder/'.str_replace("/","",$obj123->filename);
       $data[$i][2]='text/plain';
-      $data[$i][3]='1';//$obj123->uril;
+      $data[$i][3]='1';
       $data[$i][4]='1458563370';
       $data[$i][5]='1458563370';
       $data[$i][6]=$i+3;
       $data[$i][7]='en';
       $i=$i+1;
 		/**
-       $data[$i][0]=$obj123->mebid;
-     $data[$i][1]=$obj123->aid;
+      $data[$i][0]=$obj123->mebid;
+      $data[$i][1]=$obj123->aid;
       $data[$i][2]=$obj123->filename;
       $data[$i][3]='https://www.dropbox.com/home?preview=';//$obj123->uril;
       $data[$i][4]='text/plain';
@@ -949,11 +948,10 @@ function migrate_nd_mdf_data_node() {
 
 function migrate_nd_dyn_data_node() {
 
-$q1 = db_select('res_manager', 'r');
+  $q1 = db_select('res_manager', 'r');
   $obj=$q1->fields('r',array('id','title','dt_created','abstract','article'))//SELECT 
         ->condition('category_id', '20')
         ->execute()->fetchAll();
-
   $i=0;
   foreach ( $obj as $obj1 ) {
     $data[$i][0]=$obj1->id;
@@ -971,8 +969,6 @@ $q1 = db_select('res_manager', 'r');
     $obj1->abstract=str_replace("â€™","'",$obj1->abstract);
     }
     $x_abstract="";
-   
-
     if (substr_count($obj1->abstract, 'Â') > 0) {
     $t1=explode("Â",$obj1->abstract);
     foreach ($t1 as $key=> $value) {
@@ -1017,11 +1013,7 @@ $q1 = db_select('res_manager', 'r');
     {
       $r=str_replace("&nbsp;","",$r);
     }
-
-    $r=preg_replace('/<a(.*?)>/i','',$r);
-    $r=preg_replace('/<\/a>/i','',$r);
     $r=preg_replace('/<h(.*?)>/i','',$r);
-    
     //--------------------------------------------------------------
     $r=str_replace("  "," ",$r);
     $r=str_replace("â€™","'",$r);
@@ -1071,7 +1063,7 @@ $q1 = db_select('res_manager', 'r');
     }
     $r=implode('<p class="emailquestion">',$ar1);
     $r=str_replace('<p class="emailquestion">',"<blockquote>",$r);
-     //--------------------------------------------------------------
+    //--------------------------------------------------------------
     $r=str_replace("a student had this reaction:","<blockquote>",$r);
     $r=str_replace("A student writes:","<blockquote>",$r);
     $r=str_replace("A practitioner writes:","<blockquote>",$r);
@@ -1173,10 +1165,9 @@ function migrate_nd_dyn_data_account() {
 
 
 function migrate_nd_dyn_data_topic() {
-$fields = array('style', 'details', 'style_parent', 'region', 'hoppiness');
-$obj = db_query('SELECT distinct(class_name)
-FROM res_classifications order by class_name');
-$i=0;
+  $fields = array('style', 'details', 'style_parent', 'region', 'hoppiness');
+  $obj = db_query('SELECT distinct(class_name) FROM res_classifications order by class_name');
+  $i=0;
   foreach ( $obj as $obj1 ) {
     $data[$i][0]=$obj1->class_name;
     $data[$i][1]=NULL;
@@ -1197,11 +1188,7 @@ function migrate_nd_dyn_data_topic_node() {
   $fields = array('bbid', 'style');
 
 
-  $obj = db_query('SELECT lrc.res_id, rc.class_name
-FROM lnk_res_class lrc, res_classifications rc, res_manager rm
-WHERE lrc.class_id = rc.id
-AND rm.id = lrc.res_id
-AND rm.category_id =20');
+  $obj = db_query('SELECT lrc.res_id, rc.class_name FROM lnk_res_class lrc, res_classifications rc, res_manager rm WHERE lrc.class_id = rc.id AND rm.id = lrc.res_id AND rm.category_id =20');
 
   $i=0;
   foreach ( $obj as $obj1 ) {
