@@ -12,6 +12,7 @@ profile data, categories to classify the dyns, and user-generated comments on
 the dyns. We want to convert this site to Drupal with just a few modifications
 to the basic structure.
 
+
 To make the example as simple as to run as possible, the source data is placed
 in tables directly in your Drupal database - in most real-world scenarios, your
 source data will be in an external database. The migrate_nd_setup submodule
