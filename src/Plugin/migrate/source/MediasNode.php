@@ -35,7 +35,7 @@ class MediasNode extends SqlBase {
      * below.
      */
     $query = $this->select('migrate_nd_mdstemp_node', 'b')
-                 ->fields('b', ['sbid', 'title','dt_session','descrip','aid','mbid','meytbid','old_id']);
+                 ->fields('b', ['sbid', 'title','dt_session','descrip','aid','mbid','meytbid','old_id','type','body_summery','field_clip','field_old_catalog','field_restricted','field_admin_tags']);
     return $query;
   }
 
@@ -53,6 +53,12 @@ class MediasNode extends SqlBase {
       'meytbid' => $this->t('Media youtube id'),
       'mebid' =>  $this->t('Media Audio id'),
       'old_id' =>  $this->t('Teachings tags reference id'),
+      'type' => $this->t('Session type'),
+      'body_summery' => $this->t('Summary of the body'),
+      'field_clip' => $this->t('Youtube clip avalable or not'),
+      'field_old_catalog' => $this->t('Body original data without format'),
+      'field_restricted' => $this->t('Restricted'),
+      'field_admin_tags' => $this->t('Admin tags reference id'),
       'terms' => $this->t('Applicable styles'),
     ];
 
@@ -81,7 +87,7 @@ class MediasNode extends SqlBase {
      * the media_term migration).
      */      
      //$fields = array('bbid', 'style');
-    $obj = db_query('SELECT title FROM migrate_nd_mdstemp_node WHERE sbid='.$row->getSourceProperty('sbid'));
+    $obj = db_query('SELECT title,old_id FROM migrate_nd_mdstemp_node WHERE sbid='.$row->getSourceProperty('sbid'));
     $i=0;
     $i1=0;
     $j=0;
@@ -94,10 +100,10 @@ class MediasNode extends SqlBase {
 		   $data1[$i]=$r->recordings;
 		   $i=$i+1;
 		 }
-		$q10 = db_query("SELECT teachername FROM sessiondata WHERE title='".$obj1->title."'");
+		$q10 = db_query("SELECT field_leader FROM sessiondata WHERE title='".$obj1->title."'");
         foreach($q10 as $r10)
          {
-		   $teachername=$r10->teachername;
+		   $teachername=$r10->field_leader;
 		   
 		 }
 	  }
@@ -134,12 +140,14 @@ class MediasNode extends SqlBase {
 		 }
 	  }
 	  
-	  $terms = $this->select('migrate_nd_dyn_topic_node', 'bt')
+	  //-------------------------------
+    $terms = $this->select('migrate_nd_dyn_topic_node', 'bt')
                  ->fields('bt', ['style'])
-      ->condition('bbid', $row->getSourceProperty('old_id'))
+      ->condition('bbid', $obj1->old_id)
       ->execute()
       ->fetchCol();
     
+    //-------------------------------
     $row->setSourceProperty('mbid',$data);  
     $row->setSourceProperty('meytbid', $meytbidref);
     $row->setSourceProperty('mebid',$mebidref);

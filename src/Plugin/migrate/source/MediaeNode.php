@@ -35,7 +35,7 @@ class MediaeNode extends SqlBase {
      * below.
      */
     $query = $this->select('migrate_nd_mde_node', 'b')
-                 ->fields('b', ['ebid', 'title','dt_event','eventbody','aid','sbid']);
+                 ->fields('b', ['ebid', 'title','dt_event','eventbody','aid','sbid','field_leader','field_venue','field_event_tags']);
     return $query;
   }
 
@@ -50,6 +50,9 @@ class MediaeNode extends SqlBase {
       'eventbody' => $this->t('Body of Event'),
       'aid' => $this->t('Auther'),
       'sbid' => $this->t('session id'),
+      'vbid' => $this->t('Venue'),
+      'mbid' => $this->t('Teacher id'),
+      'eventag' => $this->t('Event tags'),
     ];
 
     return $fields;
@@ -82,11 +85,62 @@ class MediaeNode extends SqlBase {
                  ->condition('eventid', $row->getSourceProperty('ebid'))
 				 ->execute()
 				 ->fetchCol();
-      
- 
-      
+    
+    
+    $q10 = db_query("SELECT field_leader FROM event WHERE id='".$row->getSourceProperty('ebid')."'");
+    foreach($q10 as $r10)
+         {
+		   $teachername=$r10->field_leader;
+		   
+		 }
+	    
+    $teachername1=explode(',',$teachername);
+	$t1=count($teachername1);
+	$i1=0;
+	for ($xyz1=0;$xyz1<$t1;$xyz1++)
+	  {
+	  $q101 = db_query("SELECT mbid FROM migrate_nd_md_node WHERE title ='".$teachername1[$xyz1]."'");
+        foreach($q101 as $r101)
+         {
+		   $data[$i1]=$r101->mbid;
+		   $i1=$i1+1;
+		   break;
+		 }
+	  }
+     
+     
+    $q1 = db_query("SELECT field_venue FROM event WHERE id='".$row->getSourceProperty('ebid')."'");
+    foreach($q1 as $r1)
+         {
+		   $venue=$r1->field_venue;
+		   
+		 }
+	    
+    $venue1=explode(',',$venue);
+	$t1=count($venue1);
+	$i1=0;
+	for ($xyz=0;$xyz<$t1;$xyz++)
+	  {
+		  
+	  $q102 = db_query("SELECT vbid FROM migrate_nd_mdv_node WHERE title ='".$venue1[$xyz]."'");
+        foreach($q102 as $r102)
+         {
+		   $d1[$i1]=$r102->vbid;
+		   $i1=$i1+1;
+		   break;
+		 }
+	  }
+	//-------------------------  
+	$q1 = db_query("SELECT field_event_tags FROM migrate_nd_mde_node WHERE ebid='".$row->getSourceProperty('ebid')."'");
+    foreach($q1 as $r1) {
+	  $eventtags=$r1->field_event_tags;   
+	}
+	$eventtags1=explode(',',$eventtags);
+    
+    $row->setSourceProperty('mbid',$data);  
     $row->setSourceProperty('sbid', $sbidr);
-    $row->setSourceProperty('eventbody', "Hi iam try to check to send multiple value using row");
+    $row->setSourceProperty('vbid',$d1);    
+    $row->setSourceProperty('eventag',$eventtags1);
     return parent::prepareRow($row);
   }
 
