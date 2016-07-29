@@ -26,7 +26,7 @@ process:
     source: mbid
   field_datetime: dt_event
   'body/value': eventbody
-  'body/summary': eventbody
+  'body/summary': eventsummary
   field_event_type: 
     plugin: migration
     migration: event_term
