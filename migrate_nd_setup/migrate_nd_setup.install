@@ -194,7 +194,7 @@ function migrate_nd_mds_schema_node() {
         'description' => 'Beer ID.',
       ),
     ),
-    'primary key' => array('sbid'),
+    //'primary key' => array('sbid'),
   );
 }
 function migrate_nd_mdsadmin_schema_node() {
@@ -335,7 +335,7 @@ function migrate_nd_mdstemp_schema_node() {
         'description' => 'Beer ID.',
       ),
     ),
-    'primary key' => array('sbid'),
+    //'primary key' => array('sbid'),
   );
 }
 
@@ -510,6 +510,11 @@ function migrate_nd_sestemp_schema_node() {
   return array(
     'description' => 'Beers of the world.',
     'fields' => array(
+     'sbid'  => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'description' => 'Beer ID.',
+      ),
       'title'  => array(
         'type' => 'varchar',
         'length' => 255,
@@ -1024,7 +1029,7 @@ function migrate_nd_sestemp_data_node() {
   
   //------------------------------------------------------------
   $q1 = db_select('sessiondata', 'sd');
-  $obj=$q1->fields('sd',array('title','field_datetime','body','Recordings','Event',' field_leader','old_id','type','body_summary','field_clip','field_old_catalog','field_restricted','field_admin_tags'))//SELECT 
+  $obj=$q1->fields('sd',array('title','field_datetime','body','Recordings','Event',' field_leader','old_id','type','body_summary','field_clip','field_old_catalog','field_restricted','field_admin_tags','sl'))//SELECT 
         ->execute()->fetchAll();
   $i=0;
   foreach ( $obj as $obj1 ) {
@@ -1067,10 +1072,11 @@ function migrate_nd_sestemp_data_node() {
 		    //$data[$i][8]=$obj1->body_summary;
 		    
 		    $data[$i][9]=$obj1->field_clip;
-		    $field_old_catalog1=str_replace(";","/",$obj1->field_old_catalog);
+		    $field_old_catalog1=str_replace(";","|",$obj1->field_old_catalog);
 		    $data[$i][10]=$field_old_catalog1;
 		    $data[$i][11]=$obj1->field_restricted;
 		    $data[$i][12]=$obj1->field_admin_tags;
+		    $data[$i][13]=$obj1->sl;
 			$i=$i+1;
 		}
 	}
@@ -1107,14 +1113,15 @@ function migrate_nd_sestemp_data_node() {
         //================================
 		//$data[$i][8]=$obj1->body_summery;
 		$data[$i][9]=$obj1->field_clip;
-		$field_old_catalog2=str_replace(";","/",$obj1->field_old_catalog);
+		$field_old_catalog2=str_replace(";","|",$obj1->field_old_catalog);
 		$data[$i][10]=$field_old_catalog2;
 		$data[$i][11]=$obj1->field_restricted;
 		$data[$i][12]=$obj1->field_admin_tags;
+		$data[$i][13]=$obj1->sl;
 		$i=$i+1;
 	}
 }
- $fields = array('title', 'dt_session','descrip','Recordings','Event','teachername','old_id','type','body_summery','field_clip','field_old_catalog','field_restricted','field_admin_tags');
+ $fields = array('title', 'dt_session','descrip','Recordings','Event','teachername','old_id','type','body_summery','field_clip','field_old_catalog','field_restricted','field_admin_tags','sbid');
   $query = db_insert('migrate_nd_sestemp_node')
            ->fields($fields);
   
@@ -1130,11 +1137,12 @@ function migrate_nd_mds_data_node() {
   
   //------------------------------------------------------------
   $q1 = db_select('migrate_nd_sestemp_node', 'sd');
-  $obj=$q1->fields('sd',array('title','dt_session','descrip','Recordings','Event',' teachername','old_id','type','body_summery','field_clip','field_old_catalog','field_restricted','field_admin_tags'))//SELECT 
+  $obj=$q1->fields('sd',array('sbid','title','dt_session','descrip','Recordings','Event',' teachername','old_id','type','body_summery','field_clip','field_old_catalog','field_restricted','field_admin_tags'))//SELECT 
         ->execute()->fetchAll();
   $i=0;
   foreach ( $obj as $obj1 ) {
-	$data[$i][0]=$i+1;
+	//$data[$i][0]=$i+1;
+	$data[$i][0]=$obj1->sbid;
     $data[$i][1]=$obj1->title;
     $data[$i][2]=$obj1->dt_session;
     $data[$i][3]=$obj1->descrip;
@@ -1185,17 +1193,20 @@ function migrate_nd_mds_data_node() {
 function migrate_nd_mdstemp_data_node() {
 	
   $query = db_select('migrate_nd_mds_node', 'bt')
-  ->fields('bt', array('title'))->distinct();
+  ->fields('bt', array('sbid'));
+  //->fields('bt', array('title'))->distinct();
+  
   $results = $query->execute();
   $i=0;
   foreach ($results as $obj123 ) {
   $query1 = db_select('migrate_nd_mds_node', 'b')
   ->fields('b', array('sbid', 'title','dt_session','descrip','aid','mbid','meytbid','eventid','old_id','type','body_summery','field_clip','field_old_catalog','field_restricted','field_admin_tags'))
-  ->condition('b.title', $obj123->title)
+  ->condition('b.sbid', $obj123->sbid)
   ->orderBy('sbid');
   $results1 = $query1->execute();
     foreach ( $results1 as $obj1 ) {
-		$data[$i][0]=$i+1;
+		//$data[$i][0]=$i+1;
+	    $data[$i][0]=$obj1->sbid;
 		$data[$i][1]=$obj1->title;
 		$data[$i][2]=$obj1->dt_session;
 		$data[$i][3]=$obj1->descrip;
@@ -1732,7 +1743,6 @@ function migrate_nd_event_data_topic_node() {
 //-------------------admin tags----------
 function migrate_nd_mdsadmin_data_node() {
   $q1 = db_select('migrate_nd_mdstemp_node', 'sd');
-  $q1 = db_select('migrate_nd_mdstemp_node', 'sd');
   $obj=$q1->fields('sd',array('sbid','title', 'field_admin_tags'))//SELECT 
         ->execute()->fetchAll();
   $i=0;
@@ -1782,7 +1792,7 @@ function migrate_nd_admin_data_topic_node() {
   $fields = array('adminbid', 'style');
 
 
-  $objq = db_query('SELECT msadm.sbid as sbid, at.style as style FROM migrate_nd_mdsadmin_node msadm,migrate_nd_admin_topic at, sessiondata sd where  msadm.title=sd.title and msadm.field_admin_tags=at.style');
+  $objq = db_query('SELECT msadm.sbid as sbid, at.style as style FROM migrate_nd_mdsadmin_node msadm,migrate_nd_admin_topic at, sessiondata sd where  msadm.title=sd.title and msadm.sbid=sd.SL and msadm.field_admin_tags=at.style');
   $i=0;
   foreach ($objq as $objq1 ) {
     $data[$i][0]=$objq1->sbid;
@@ -1852,7 +1862,7 @@ function migrate_nd_session_data_topic_node() {
   $fields = array('sessionbid', 'style');
 
 
-  $objq = db_query('SELECT msadm.sbid as sbid, at.style as style FROM migrate_nd_mdssession_node msadm,migrate_nd_session_topic at, sessiondata sd where  msadm.title=sd.title and msadm.type=at.style');
+  $objq = db_query('SELECT msadm.sbid as sbid, at.style as style FROM migrate_nd_mdssession_node msadm,migrate_nd_session_topic at, sessiondata sd where  msadm.title=sd.title  and msadm.sbid=sd.SL and msadm.type=at.style');
   $i=0;
   foreach ($objq as $objq1 ) {
     $data[$i][0]=$objq1->sbid;

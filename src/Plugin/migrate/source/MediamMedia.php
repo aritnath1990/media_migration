@@ -95,7 +95,7 @@ class MediamMedia extends SqlBase {
 			  $j=$j+1;
 		  }
    
-   $q1 = db_query("select a.sbid from migrate_nd_mdstemp_node a, migrate_nd_sestemp_node b, migrate_nd_mdm_node c where  c.filename=b.Recordings  and b.title=a.title  and  c.mebid=".addslashes($row->getSourceProperty('mebid')) );
+   $q1 = db_query("select a.sbid from migrate_nd_mdstemp_node a, migrate_nd_sestemp_node b, migrate_nd_mdm_node c where  c.filename=b.Recordings  and b.sbid=a.sbid  and  c.mebid=".addslashes($row->getSourceProperty('mebid')) );
    foreach($q1 as $r)
    {
 	 $session_id=$r->sbid;

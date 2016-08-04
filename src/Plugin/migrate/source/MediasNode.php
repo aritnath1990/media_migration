@@ -90,7 +90,7 @@ class MediasNode extends SqlBase {
      * the media_term migration).
      */      
      //$fields = array('bbid', 'style');
-    $obj = db_query('SELECT title, old_id, field_restricted, field_clip,eventid FROM migrate_nd_mdstemp_node WHERE sbid='.addslashes($row->getSourceProperty('sbid')));
+    $obj = db_query('SELECT distinct title, old_id, field_restricted, field_clip,eventid,sbid FROM migrate_nd_mdstemp_node WHERE sbid='.addslashes($row->getSourceProperty('sbid')));
     $i=0;
     $i1=0;
     $j=0;
@@ -99,13 +99,13 @@ class MediasNode extends SqlBase {
     $fieldclip=0;
     foreach($obj as $obj1)
       {
-	    $q1 = db_query("SELECT recordings FROM migrate_nd_sestemp_node WHERE title='".addslashes($obj1->title)."'");
+	    $q1 = db_query("SELECT distinct recordings FROM migrate_nd_sestemp_node WHERE title='".addslashes($obj1->title)."' and sbid='". $obj1->sbid."'");
         foreach($q1 as $r)
          {
 		   $data1[$i]=$r->recordings;
 		   $i=$i+1;
 		 }
-		$q10 = db_query("SELECT field_leader FROM sessiondata WHERE title='".addslashes($obj1->title)."'");
+		$q10 = db_query("SELECT field_leader FROM sessiondata WHERE title='".addslashes($obj1->title)."' and SL='". $obj1->sbid."'");
         foreach($q10 as $r10)
          {
 		   $teachername=$r10->field_leader;
@@ -128,7 +128,7 @@ class MediasNode extends SqlBase {
 	  $data1count=count($data1);
       for ($xyz=0;$xyz<$data1count;$xyz++)
 	  {
-		  $q2 = db_query("SELECT mid FROM media_field_data WHERE name =(SELECT distinct title FROM migrate_nd_mdmyt_node WHERE filename='".addslashes($data1[$xyz])."')");
+		  $q2 = db_query("SELECT distinct  mid FROM media_field_data WHERE name =(SELECT distinct title FROM migrate_nd_mdmyt_node WHERE filename='".addslashes($data1[$xyz])."')");
 		  
           foreach($q2 as $r2)
           {
@@ -136,7 +136,7 @@ class MediasNode extends SqlBase {
 			  $j=$j+1;
 		  }
           
-          $q3 = db_query("SELECT mid FROM media_field_data WHERE name =(SELECT distinct title FROM migrate_nd_mdm_node WHERE filename='".addslashes($data1[$xyz])."')");
+          $q3 = db_query("SELECT distinct mid FROM media_field_data WHERE name =(SELECT distinct title FROM migrate_nd_mdm_node WHERE filename='".addslashes($data1[$xyz])."')");
           foreach($q3 as $r3)
           {
 			  $meytbidref[$j]=$r3->mid;
@@ -172,7 +172,7 @@ class MediasNode extends SqlBase {
 	
 	
 	$admintags1 = $this->select('migrate_nd_admin_topic_node', 'bt')
-                 ->fields('bt', ['style'])
+                 ->fields('bt', ['style'])->distinct()
       ->condition('adminbid', $row->getSourceProperty('sbid'))
       ->execute()
       ->fetchCol();
