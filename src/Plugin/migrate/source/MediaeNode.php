@@ -83,7 +83,7 @@ class MediaeNode extends SqlBase {
      */
     
     $sbidr = $this->select('migrate_nd_mdstemp_node', 'e')
-                 ->fields('e', ['sbid'])
+                 ->fields('e', ['sbid'])->distinct()
                  ->condition('eventid', $row->getSourceProperty('ebid'))
 				 ->execute()
 				 ->fetchCol();
