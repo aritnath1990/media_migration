@@ -90,3 +90,36 @@ drush mi dyn_node,dyn_comment
 # You can rollback specific migrations.
 drush mr dyn_comment,dyn_node
 # End
+
+# All the command to run migration in platformsh
+drush sql-cli < /app/web/modules/migrate_plus/extra/session_type.sql
+drush sql-cli < /app/web/modules/migrate_plus/extra/admin_tags.sql
+drush sql-cli < /app/web/modules/migrate_plus/extra/audio.sql
+drush sql-cli < /app/web/modules/migrate_plus/extra/youtube.sql
+drush sql-cli < /app/web/modules/migrate_plus/extra/sessiondata.sql
+drush sql-cli < /app/web/modules/migrate_plus/extra/Teacher.sql
+drush sql-cli < /app/web/modules/migrate_plus/extra/event.sql
+drush sql-cli < /app/web/modules/migrate_plus/extra/lrc.sql
+drush sql-cli < /app/web/modules/migrate_plus/extra/rc.sql
+drush sql-cli < /app/web/modules/migrate_plus/extra/tr.sql
+drush sql-cli < /app/web/modules/migrate_plus/extra/event_tags.sql
+drush sql-cli < /app/web/modules/migrate_plus/extra/Venue.sql
+
+drush -y en file_entity_check
+drush -y pmu migrate_tools
+drush -y en migrate_tools
+drush -y en migrate_nd
+drush mi dyn_term
+drush mi admin_term
+drush mi event_term
+drush mi session_term
+drush mi dyn_user
+drush mi dyn_node
+drush mi mediam_file
+drush mi mediam_media
+drush mi mediamyt_media
+drush mi mediav_node
+drush mi media_node
+drush mi medias_node
+drush mi mediae_node
+
