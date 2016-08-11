@@ -1682,7 +1682,7 @@ function migrate_nd_dyn_data_topic_node() {
   $fields = array('bbid', 'style');
 
 
-  $obj = db_query('SELECT lrc.res_id, rc.class_name FROM lnk_res_class lrc, res_classifications rc, res_manager rm WHERE lrc.class_id = rc.id AND rm.id = lrc.res_id AND rm.category_id =20');
+  $obj = db_query('SELECT lrc.res_id, rc.class_name FROM lnk_res_class lrc, res_classifications rc, res_manager rm WHERE lrc.class_id = rc.id AND rm.id = lrc.res_id');
 
   $i=0;
   foreach ( $obj as $obj1 ) {
